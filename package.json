@@ -1,0 +1,31 @@
+{
+  "name": "goit-node-rest-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/DmytroVasylenko6/goit-node-rest-api#readme",
+  "bugs": {
+    "url": "https://github.com/DmytroVasylenko6/goit-node-rest-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DmytroVasylenko6/goit-node-rest-api.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "morgan": "^1.10.0",
+    "nanoid": "^5.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
