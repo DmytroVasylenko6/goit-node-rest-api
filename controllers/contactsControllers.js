@@ -2,14 +2,16 @@ import * as contactsService from '../services/contactsServices.js';
 import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../decorators/ctrlWrapper.js';
 
-export const getContactsController = ctrlWrapper(async (_, res) => {
-  const data = await contactsService.getContacts();
+export const getContactsController = ctrlWrapper(async (req, res) => {
+  const { id: owner } = req.user;
+  const data = await contactsService.getContacts({ owner });
   res.json(data);
 });
 
 export const getContactByIdController = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
-  const data = await contactsService.getContactById(id);
+  const { id: owner } = req.user;
+  const data = await contactsService.getContact({ id, owner });
   if (!data) {
     throw HttpError(404, 'Not found');
   }
@@ -17,13 +19,15 @@ export const getContactByIdController = ctrlWrapper(async (req, res) => {
 });
 
 export const addContactController = ctrlWrapper(async (req, res) => {
-  const data = await contactsService.addContact(req.body);
+  const { id: owner } = req.user;
+  const data = await contactsService.addContact({ ...req.body, owner });
   res.status(201).json(data);
 });
 
 export const updateContactController = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
-  const data = await contactsService.updateContact(id, req.body);
+  const { id: owner } = req.user;
+  const data = await contactsService.updateContact({ id, owner }, req.body);
   if (!data) {
     throw HttpError(404, 'Not found');
   }
@@ -32,7 +36,8 @@ export const updateContactController = ctrlWrapper(async (req, res) => {
 
 export const deleteContactController = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
-  const data = await contactsService.deleteContact(id);
+  const { id: owner } = req.user;
+  const data = await contactsService.deleteContact({ id, owner });
 
   if (!data) {
     throw HttpError(404, 'Not found');
