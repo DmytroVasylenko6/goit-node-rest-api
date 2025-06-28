@@ -56,7 +56,7 @@ export const loginUser = async data => {
 
   await user.update({ token });
 
-  return { token, user: { email: user.email, subscription: user.subscription } };
+  return { token, user: { email: user.email, subscription: user.subscription, avatarURL: user.avatarURL } };
 };
 
 export const logoutUser = async id => {
@@ -66,4 +66,14 @@ export const logoutUser = async id => {
   }
 
   await user.update({ token: null });
+};
+
+export const updateUserAvatar = async (id, data) => {
+  const user = await User.findByPk(id);
+  if (!user) {
+    throw HttpError(404, 'User not found');
+  }
+
+  await user.update(data);
+  return user;
 };

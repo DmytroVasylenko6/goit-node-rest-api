@@ -16,27 +16,35 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./app.js",
-    "dev": "nodemon ./app.js"
+    "dev": "nodemon ./app.js",
+    "test": "jest --detectOpenHandles",
+    "test:coverage": "jest --coverage --config jest.config.mjs"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.18.2",
+    "gravatar": "^1.8.2",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "multer": "^2.0.1",
     "nanoid": "^5.1.5",
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2",
+    "@babel/core": "^7.27.7",
+    "@babel/preset-env": "^7.27.2",
+    "babel-jest": "^30.0.2",
     "eslint": "^7.19.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1"
+    "eslint-plugin-promise": "^4.2.1",
+    "jest": "^30.0.3",
+    "nodemon": "^3.0.2"
   }
 }

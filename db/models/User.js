@@ -1,8 +1,7 @@
 import { DataTypes } from 'sequelize';
-
 import { sequelize } from '../Sequelize.js';
-
 import { emailRegexp } from '../../constants/regexp.js';
+import gravatar from 'gravatar';
 
 const User = sequelize.define(
   'user',
@@ -28,13 +27,24 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       defaultValue: null,
     },
+    avatarURL: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     createdAt: false,
     updatedAt: false,
+    hooks: {
+      beforeCreate: (user) => {
+        if (!user.avatarURL) {
+          user.avatarURL = gravatar.url(user.email, { s: '250' }, true);
+        }
+      },
+    },
   }
 );
 
-// User.sync({ alter: true });
+User.sync({ alter: true });
 
 export default User;
