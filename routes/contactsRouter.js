@@ -24,24 +24,12 @@ contactsRouter.get('/', getContactsController);
 
 contactsRouter.get('/:id', getContactByIdController);
 
-contactsRouter.post(
-  '/',
-  validateBody(createContactSchema),
-  addContactController
-);
+contactsRouter.post('/', validateBody(createContactSchema), addContactController);
 
-contactsRouter.put(
-  '/:id',
-  validateBody(updateContactSchema),
-  updateContactController
-);
+contactsRouter.put('/:id', validateBody(updateContactSchema), updateContactController);
 
 contactsRouter.delete('/:id', deleteContactController);
 
-contactsRouter.patch(
-  '/:id/favorite',
-  validateBody(updateFavoriteSchema),
-  updateStatusContactController
-);
+contactsRouter.patch('/:id/favorite', validateBody(updateFavoriteSchema), updateStatusContactController);
 
 export default contactsRouter;

@@ -1,8 +1,11 @@
-import authControllers from '../authControllers.js';
+import * as authControllers from '../authControllers.js';
 import * as authServices from '../../services/authServices.js';
 import { sequelize } from '../../db/Sequelize.js';
 
 jest.mock('../../services/authServices.js');
+jest.mock('nanoid', () => ({
+	nanoid: jest.fn(() => 'mocked-nanoid-id'),
+}));
 const mockRes = () => {
 	const res = {};
 	res.status = jest.fn().mockReturnValue(res);
