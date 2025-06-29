@@ -1,25 +1,32 @@
 import express from 'express';
-
 import authenticate from '../middlewares/authenticate.js';
-
-import authControllers from '../controllers/authControllers.js';
-
+import {
+  registerController,
+  loginController,
+  logoutController,
+  getCurrentController,
+  updateAvatarController,
+  verifyController,
+  resendVerificationController,
+} from '../controllers/authControllers.js';
 import validateBody from '../helpers/validateBody.js';
-
-import { authRegisterSchema, authLoginSchema } from '../schemas/authSchemas.js';
-
+import { authRegisterSchema, authLoginSchema, emailSchema } from '../schemas/authSchemas.js';
 import upload from '../middlewares/upload.js';
 
 const authRouter = express.Router();
 
-authRouter.post('/register', upload.single('avatar'), validateBody(authRegisterSchema), authControllers.registerController);
+authRouter.post('/register', upload.single('avatar'), validateBody(authRegisterSchema), registerController);
 
-authRouter.post('/login', validateBody(authLoginSchema), authControllers.loginController);
+authRouter.get('/verify/:verificationCode', verifyController);
 
-authRouter.post('/logout', authenticate, authControllers.logoutController);
+authRouter.post('/verify', validateBody(emailSchema), resendVerificationController);
 
-authRouter.get('/current', authenticate, authControllers.getCurrentController);
+authRouter.post('/login', validateBody(authLoginSchema), loginController);
 
-authRouter.patch('/avatars', authenticate, upload.single('avatar'), authControllers.updateAvatar);
+authRouter.post('/logout', authenticate, logoutController);
+
+authRouter.get('/current', authenticate, getCurrentController);
+
+authRouter.patch('/avatars', authenticate, upload.single('avatar'), updateAvatarController);
 
 export default authRouter;

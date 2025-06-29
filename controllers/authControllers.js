@@ -1,10 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as authServices from '../services/authServices.js';
-
 import ctrlWrapper from '../decorators/ctrlWrapper.js';
 
-const registerController = async (req, res) => {
+export const registerController = ctrlWrapper(async (req, res) => {
   const { email, subscription, avatarURL } = await authServices.registerUser(req.body);
 
   res.status(201).json({
@@ -14,24 +13,24 @@ const registerController = async (req, res) => {
       avatarURL
     },
   });
-};
+});
 
-const loginController = async (req, res) => {
+export const loginController = ctrlWrapper(async (req, res) => {
   const { token, user } = await authServices.loginUser(req.body);
 
   res.json({ token, user });
-};
+});
 
-const logoutController = async (req, res) => {
+export const logoutController = ctrlWrapper(async (req, res) => {
   const { id } = req.user;
   await authServices.logoutUser(id);
 
   res.status(204).json({
     message: 'Logout successfully',
   });
-};
+});
 
-const getCurrentController = (req, res) => {
+export const getCurrentController = ctrlWrapper((req, res) => {
   const { email, subscription, avatarURL } = req.user;
 
   res.json({
@@ -39,9 +38,9 @@ const getCurrentController = (req, res) => {
     subscription,
     avatarURL
   });
-};
+});
 
-const updateAvatar = ctrlWrapper(async (req, res) => {
+export const updateAvatarController = ctrlWrapper(async (req, res) => {
   if (!req.user) {
     throw HttpError(401, 'Not authorized');
   }
@@ -78,10 +77,25 @@ const updateAvatar = ctrlWrapper(async (req, res) => {
   res.status(200).json({ avatarURL: newAvatarURL });
 });
 
-export default {
-  registerController: ctrlWrapper(registerController),
-  loginController: ctrlWrapper(loginController),
-  logoutController: ctrlWrapper(logoutController),
-  getCurrentController: ctrlWrapper(getCurrentController),
-  updateAvatar: ctrlWrapper(updateAvatar),
-};
+export const verifyController = ctrlWrapper(async (req, res) => {
+  const { verificationCode } = req.params;
+  await authServices.verifyUser(verificationCode);
+
+  res.status(200).json({
+    message: 'Verification successful',
+  });
+});
+
+export const resendVerificationController = ctrlWrapper(async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    throw HttpError(400, 'missing required field email');
+  }
+
+  await authServices.resendVerification(email);
+
+  res.status(200).json({
+    message: 'Verification email sent',
+  });
+});
